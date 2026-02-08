@@ -38,11 +38,11 @@ export default function StatsCard() {
         const data = await response.json();
         console.log("Tutor data:", data);
 
-      const tutorList = data.data;
+        const tutorList = data.data;
 
-      if (!Array.isArray(tutorList)) {
-        throw new Error("Tutor list is not an array");
-      }
+        if (!Array.isArray(tutorList)) {
+          throw new Error("Tutor list is not an array");
+        }
 
         console.log("Is tutors array?", Array.isArray(tutorList));
         console.log("TutorList value:", tutorList);
@@ -61,32 +61,25 @@ export default function StatsCard() {
 
   if (loading) return <p>Loading tutors...</p>;
 
+
   return (
-    <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
-      {Array.isArray(tutors) && tutors.length === 0 ? (
-        <p>No tutors available</p>
-      ) : (
-        Array.isArray(tutors) &&
-        tutors
-        .filter((tutor) => tutor.user)
-        .map((tutor) => (
-          <div
-            key={tutor.id}
-            style={{
-              border: "1px solid #ccc",
-              borderRadius: "10px",
-              padding: "16px",
-              width: "220px",
-              boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-            }}
-          >
-            <h2>Name:{tutor.user!.name}</h2>
-            <p><strong>Bio:</strong> {tutor.bio}</p>
-            <p><strong>Rate:</strong> ${tutor.perHourRate}/hr</p>
-            <p><strong>Reviews:</strong> {tutor.reviews.length}</p>
-          </div>
-        ))
-      )}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 m-4">
+      {tutors.map((tutor) => (
+        <div
+          key={tutor.id}
+          className="flex flex-col gap-3 p-6 border rounded-xl shadow-sm bg-white transition-transform transform hover:-translate-y-2 hover:shadow-lg"
+        >
+          <h2 className="text-lg font-semibold">
+            Name: {tutor.user?.name || "No name"}
+          </h2>
+          <p><strong>Bio:</strong> {tutor.bio}</p>
+          <p><strong>Rate:</strong> ${tutor.perHourRate}/hr</p>
+          <p><strong>Reviews:</strong> {tutor.reviews.length}</p>
+          <button className="w-full py-2 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700 transition-colors">
+            View Profile
+          </button>
+        </div>
+      ))}
     </div>
   );
 
