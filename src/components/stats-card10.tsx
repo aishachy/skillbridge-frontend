@@ -24,8 +24,9 @@ export default function StatsCard() {
   useEffect(() => {
     const fetchTutors = async () => {
       try {
-        const response = await fetch("http://localhost:5000/tutor", {
+        const response = await fetch("http://localhost:5000/api/tutor", {
           cache: "no-store",
+          credentials: "include",
           headers: {
             Accept: "application/json",
           },
@@ -37,11 +38,16 @@ export default function StatsCard() {
         const data = await response.json();
         console.log("Tutor data:", data);
 
-        if (!Array.isArray(data)) {
-          throw new Error("API did not return an array");
-        }
+      const tutorList = data.data;
 
-        setTutors(data);
+      if (!Array.isArray(tutorList)) {
+        throw new Error("Tutor list is not an array");
+      }
+
+        console.log("Is tutors array?", Array.isArray(tutorList));
+        console.log("TutorList value:", tutorList);
+
+        setTutors(tutorList);
       } catch (error) {
         console.error("Fetch failed:", error);
       } finally {
@@ -57,10 +63,13 @@ export default function StatsCard() {
 
   return (
     <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
-      {tutors.length === 0 ? (
+      {Array.isArray(tutors) && tutors.length === 0 ? (
         <p>No tutors available</p>
       ) : (
-        tutors.map((tutor) => (
+        Array.isArray(tutors) &&
+        tutors
+        .filter((tutor) => tutor.user)
+        .map((tutor) => (
           <div
             key={tutor.id}
             style={{
@@ -71,7 +80,7 @@ export default function StatsCard() {
               boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
             }}
           >
-            <h2 style={{ marginBottom: "8px" }}>{tutor.user.name}</h2>
+            <h2>Name:{tutor.user!.name}</h2>
             <p><strong>Bio:</strong> {tutor.bio}</p>
             <p><strong>Rate:</strong> ${tutor.perHourRate}/hr</p>
             <p><strong>Reviews:</strong> {tutor.reviews.length}</p>
@@ -80,4 +89,5 @@ export default function StatsCard() {
       )}
     </div>
   );
+
 }
