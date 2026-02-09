@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface Tutor {
   id: number;
@@ -20,6 +21,7 @@ interface Tutor {
 export default function StatsCard() {
   const [tutors, setTutors] = useState<Tutor[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter()
 
   useEffect(() => {
     const fetchTutors = async () => {
@@ -32,9 +34,6 @@ export default function StatsCard() {
           },
         });
 
-        console.log("STATUS:", response.status);
-        console.log("HEADERS:", response.headers.get("content-type"));
-
         const data = await response.json();
         console.log("Tutor data:", data);
 
@@ -43,9 +42,6 @@ export default function StatsCard() {
         if (!Array.isArray(tutorList)) {
           throw new Error("Tutor list is not an array");
         }
-
-        console.log("Is tutors array?", Array.isArray(tutorList));
-        console.log("TutorList value:", tutorList);
 
         setTutors(tutorList);
       } catch (error) {
@@ -60,10 +56,10 @@ export default function StatsCard() {
 
 
   if (loading) return <p>Loading tutors...</p>;
-
+  if (tutors.length === 0) return <p>No tutors available</p>;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 m-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {tutors.map((tutor) => (
         <div
           key={tutor.id}
@@ -75,7 +71,10 @@ export default function StatsCard() {
           <p><strong>Bio:</strong> {tutor.bio}</p>
           <p><strong>Rate:</strong> ${tutor.perHourRate}/hr</p>
           <p><strong>Reviews:</strong> {tutor.reviews.length}</p>
-          <button className="w-full py-2 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700 transition-colors">
+          <button
+            className="w-full py-2 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700 transition-colors"
+            onClick={() => router.push(`/tutor/${tutor.id}`)} // navigate to profile page
+          >
             View Profile
           </button>
         </div>
