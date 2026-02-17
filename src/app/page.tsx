@@ -1,14 +1,14 @@
-import { Blog7 } from "@/components/blog7";
+import HowItWorks from "@/components/howItWorks";
 import { Footer2 } from "@/components/footer2";
 import { Hero7 } from "@/components/hero7";
-import StatsCard from "@/components/stats-card10";
+import FeaturedTutor from "@/components/featuredTutor";
 
 export default function Home() {
   return (
     <div>
       <Hero7></Hero7>
-      <StatsCard></StatsCard>
-      <Blog7 tagline={"hi"} heading={"hello"} description={""} buttonText={""} buttonUrl={""} posts={[]}></Blog7>
+      <HowItWorks></HowItWorks>
+      <FeaturedTutor></FeaturedTutor>
       <Footer2></Footer2>
     </div>
   );
