@@ -1,10 +1,11 @@
 import { Star } from "lucide-react";
-import React from "react";
+
 
 import { cn } from "@/lib/utils";
 
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface Hero7Props {
   heading?: string;
@@ -26,76 +27,29 @@ interface Hero7Props {
 }
 
 const Hero7 = ({
-  heading = "A Collection of Components Built With Shadcn & Tailwind",
-  description = "Finely crafted components built with React, Tailwind and Shadcn UI. Developers can copy and paste these blocks directly into their project.",
-  button = {
-    text: "Discover all components",
-    url: "https://www.shadcnblocks.com",
-  },
-  reviews = {
-    count: 200,
-    rating: 5.0,
-    avatars: [
-      {
-        src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-1.webp",
-        alt: "Avatar 1",
-      },
-      {
-        src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-2.webp",
-        alt: "Avatar 2",
-      },
-      {
-        src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-3.webp",
-        alt: "Avatar 3",
-      },
-      {
-        src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-4.webp",
-        alt: "Avatar 4",
-      },
-      {
-        src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-5.webp",
-        alt: "Avatar 5",
-      },
-    ],
-  },
+  heading = "Connect With Expert Tutors!!",
+  description = "Find highly qualified tutors tailored to your learning needs. Browse profiles, compare expertise, read reviews, and book sessions with confidence — all in one place.",
   className,
 }: Hero7Props) => {
   return (
-    <section className={cn("py-32", className)}>
-      <div className="container text-center">
-        <div className="mx-auto flex max-w-5xl flex-col gap-6">
-          <h1 className="text-3xl font-semibold lg:text-6xl">{heading}</h1>
-          <p className="text-balance text-muted-foreground lg:text-lg">
-            {description}
-          </p>
-        </div>
-        <Button asChild size="lg" className="mt-10">
-          <a href={button.url}>{button.text}</a>
-        </Button>
-        <div className="mx-auto mt-10 flex w-fit flex-col items-center gap-4 sm:flex-row">
-          <span className="mx-4 inline-flex items-center -space-x-4">
-            {reviews.avatars.map((avatar, index) => (
-              <Avatar key={index} className="size-14 border">
-                <AvatarImage src={avatar.src} alt={avatar.alt} />
-              </Avatar>
-            ))}
-          </span>
-          <div>
-            <div className="flex items-center gap-1">
-              {[...Array(5)].map((_, index) => (
-                <Star
-                  key={index}
-                  className="size-5 fill-yellow-400 text-yellow-400"
-                />
-              ))}
-              <span className="mr-1 font-semibold">
-                {reviews.rating?.toFixed(1)}
-              </span>
-            </div>
-            <p className="text-left font-medium text-muted-foreground">
-              from {reviews.count}+ reviews
-            </p>
-          </div>
+    <section
+      className={cn(
+        "relative w-full min-h-screen bg-[url('/tutor-girl-home-writing-new-information_23-2148511025.jpg')] bg-cover bg-center bg-no-repeat mb-10",
+        className
+      )}
+    >
+      <div className="absolute inset-0 bg-black/60"></div>
+      <div className="container mx-auto relative z-10 flex flex-col items-center justify-center min-h-screen px-6 sm:px-10 lg:px-20">
+        <div className="flex flex-col items-center gap-6 max-w-5xl text-center">
+          <h1 className="text-3xl lg:text-6xl font-semibold text-white">{heading}</h1>
+          <p className="text-white lg:text-lg text-balance">{description}</p>
+
+          <Link
+            href="/tutors"
+            className="inline-block mt-6 bg-blue-600 text-white px-6 py-3 rounded-lg max-w-max hover:bg-blue-700 transition-colors"
+          >
+            Find All Tutors
+          </Link>
         </div>
       </div>
     </section>
