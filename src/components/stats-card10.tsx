@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { env } from "@/env";
 
 interface Tutor {
   id: number;
@@ -18,15 +19,18 @@ interface Tutor {
   reviews: any[];
 }
 
+const API_URL = env.NEXT_PUBLIC_API_URL
+
 export default function StatsCard() {
   const [tutors, setTutors] = useState<Tutor[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter()
 
   useEffect(() => {
+      console.log("Fetching tutors...")
     const fetchTutors = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/tutor", {
+        const response = await fetch(`${API_URL}/api/tutor`, {
           cache: "no-store",
           credentials: "include",
           headers: {

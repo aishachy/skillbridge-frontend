@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import { env } from "@/env";
 import { useEffect, useState } from "react";
 
 
@@ -31,12 +32,14 @@ interface Tutor {
   bookings: any[];
 }
 
+const API_URL = env.NEXT_PUBLIC_API_URL
+
 export default function TutorProfiles() {
   const [tutors, setTutors] = useState<Tutor[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/tutor")
+    fetch(`${API_URL}/api/tutor`)
       .then(res => res.json())
       .then(data => {
         setTutors(data.data || []);
