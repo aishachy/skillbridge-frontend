@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { env } from "@/env";
+import Link from "next/link";
 
 interface Tutor {
   id: number;
@@ -53,7 +54,7 @@ export default function StatsCard() {
   if (loading)
     return <p className="text-center mt-10">Loading tutors...</p>;
 
-  const filteredTutors = tutors.filter((tutor) => {
+  const filteredTutor = tutors.filter((tutor) => {
     const searchLower = search.toLowerCase();
 
     const matchesSearch =
@@ -95,13 +96,13 @@ export default function StatsCard() {
       </div>
 
       {/* grid */}
-      {filteredTutors.length === 0 ? (
+      {filteredTutor.length === 0 ? (
         <p className="text-center text-gray-500">
           No tutors match your filters
         </p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-          {filteredTutors.map((tutor) => (
+          {filteredTutor.map((tutor) => (
             <div
               key={tutor.id}
               className="relative bg-white rounded-[28px] shadow-md border border-gray-100 p-8 hover:shadow-xl transition duration-300"
@@ -136,13 +137,19 @@ export default function StatsCard() {
                 {tutor.bio}
               </p>
 
-              {/* Button */}
+              {/* Button
               <button
                 onClick={() => router.push(`/tutor/${tutor.id}`)}
                 className="mt-8 w-full bg-purple-600 text-white py-4 rounded-2xl font-semibold tracking-widest hover:bg-gray-800 transition"
               >
                 Explore Profile →
-              </button>
+              </button> */}
+              <Link
+                href={`/tutor/${tutor.id}`}
+                className="mt-8 w-full bg-gray-900 text-white py-4 rounded-2xl font-semibold tracking-widest hover:bg-gray-800 transition text-center block"
+              >
+                Explore Profile →
+              </Link>
             </div>
           ))}
         </div>

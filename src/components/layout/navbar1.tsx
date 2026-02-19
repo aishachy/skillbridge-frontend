@@ -1,6 +1,6 @@
 "use client";
 
-import {  Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -54,33 +54,25 @@ interface Navbar1Props {
   };
 }
 
-const Navbar1 = ({
-  menu = [
+interface Navbar1Props {
+  tutorId?: number; // optional
+  className?: string;
+}
+
+const Navbar1 = ({ tutorId, className }: Navbar1Props) => {
+  // Define menu inside function so tutorId can be used
+  const menu: MenuItem[] = [
     { title: "Home", url: "/" },
-    {
-      title: "Find a tutor",
-      url: "/tutors",
-    },
-    {
-      title: "Tutor Profile",
-      url: "/tutorsId",
-    },
-    {
-      title: "How it works",
-      url: "/src/components/howItWorks.tsx",
-    },
-    {
-      title: "About",
-      url: "/about",
-    },
-  ],
-  auth = {
+    { title: "Find a tutor", url: "/tutor" },
+    { title: "Tutor Profile", url: tutorId ? `/tutor/${tutorId}` : "/tutor" },
+    { title: "How it works", url: "/how-it-works" },
+    { title: "About", url: "/about" },
+  ];
+
+  const auth = {
     login: { title: "Login", url: "/login" },
     signup: { title: "Register", url: "/register" },
-  },
-  className,
-}: Navbar1Props) => {
-  return (
+  }; return (
     <section className={cn("py-4", className)}>
       <div className="container mx-auto p-4">
         {/* Desktop Menu */}
@@ -151,10 +143,10 @@ const renderMenuItem = (item: MenuItem) => {
   return (
     <NavigationMenuItem key={item.title}>
       <NavigationMenuLink
-      asChild
+        asChild
         className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground"
       >
-        <Link href={ item.url }>
+        <Link href={item.url}>
           {item.title}
         </Link>
       </NavigationMenuLink>
