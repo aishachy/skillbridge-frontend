@@ -13,10 +13,13 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel, FieldDescription } from "@/components/ui/field";
+import { useAuth } from "@/providers/authProvider";
 import { loginUser } from "@/services/authService";
+import { toastSuccess } from "@/lib/swal";
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
   const router = useRouter();
+  const {setUser} = useAuth()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -28,18 +31,22 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
     setError(null); 
 
     try {
-      const {user, token} = await loginUser({ email, password });
+      const { user, token } = await loginUser({ email, password });
+
+      toastSuccess("Login Successful")
+      // store auth
       localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
 
-      
-      if (user.role === "ADMIN") router.push("/admin/dashboard");
-      else if (user.role === "TUTOR") router.push("/tutor/dashboard");
-      else if (user.role === "STUDENT") router.push("/dashboard");
-      else router.push("/");
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      setError(err?.message || "Login failed");
+      setUser(user);
+
+      router.push("/dashboard");
+
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : "Login failed";
+      setError(message);
     } finally {
       setLoading(false);
     }

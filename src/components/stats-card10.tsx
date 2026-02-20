@@ -146,7 +146,7 @@ export default function StatsCard() {
               </button> */}
               <Link
                 href={`/tutor/${tutor.id}`}
-                className="mt-8 w-full bg-gray-900 text-white py-4 rounded-2xl font-semibold tracking-widest hover:bg-gray-800 transition text-center block"
+                className="mt-8 w-full bg-purple-600 text-white py-4 rounded-2xl font-semibold tracking-widest hover:bg-gray-800 transition text-center block"
               >
                 Explore Profile →
               </Link>

@@ -12,85 +12,78 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { Field, FieldGroup, FieldLabel, FieldDescription } from "@/components/ui/field";
-import { registerUser, loginUser } from "@/services/authService";
+import {
+  Field,
+  FieldGroup,
+  FieldLabel,
+  FieldDescription,
+} from "@/components/ui/field";
+
+import { registerUser } from "@/services/authService";
+import { useAuth } from "@/providers/authProvider";
+import { toastError, toastSuccess } from "@/lib/swal";
 
 type Role = "STUDENT" | "TUTOR";
 
-export function RegisterForm({ className, ...props }: React.ComponentProps<"div">) {
+export function RegisterForm({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
   const router = useRouter();
+  const { setUser } = useAuth();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState<Role>("STUDENT");
-  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
     setLoading(true);
 
+    // Local password mismatch check
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      toastError("Passwords do not match");
       setLoading(false);
       return;
     }
 
     try {
-      const user = await registerUser({
-        name,
-        email,
-        password,
-        role,
-      });
+      const user = await registerUser({ name, email, password, role });
 
-      if (!user) {
-        throw new Error("Registration failed");
-      }
 
-      switch (user.role) {
-        case "ADMIN":
-          router.push("/admin/dashboard");
-          break;
-        case "TUTOR":
-          router.push("/tutor/dashboard");
-          break;
-        case "STUDENT":
-          router.push("/dashboard");
-          break;
-        default:
-          router.push("/");
-      }
-
+      localStorage.setItem("user", JSON.stringify(user));
+      setUser(user);
+      toastSuccess("Registration successful!");
+      router.push("/dashboard");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      setError(err?.message || "Registration failed");
+      if (err.statusCode === 409) {
+        toastError("Registration failed: Email already exists");
+      } else {
+        toastError("Registration failed: Email already exists");
+      }
     } finally {
-      setLoading(false);
+      setLoading(false); 
     }
   };
-
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
           <CardTitle>Create your account</CardTitle>
-          <CardDescription>
-            Enter your name, email, password, and select your role
-          </CardDescription>
+          <CardDescription>Enter your details to sign up</CardDescription>
         </CardHeader>
+
         <CardContent>
           <form onSubmit={handleSubmit}>
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="name">Name</FieldLabel>
+                <FieldLabel>Name</FieldLabel>
                 <Input
-                  id="name"
-                  type="text"
-                  placeholder="Your name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
@@ -98,11 +91,9 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
               </Field>
 
               <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldLabel>Email</FieldLabel>
                 <Input
-                  id="email"
                   type="email"
-                  placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -110,9 +101,8 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
               </Field>
 
               <Field>
-                <FieldLabel htmlFor="password">Password</FieldLabel>
+                <FieldLabel>Password</FieldLabel>
                 <Input
-                  id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -121,9 +111,8 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
               </Field>
 
               <Field>
-                <FieldLabel htmlFor="confirmPassword">Confirm Password</FieldLabel>
+                <FieldLabel>Confirm Password</FieldLabel>
                 <Input
-                  id="confirmPassword"
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
@@ -132,9 +121,8 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
               </Field>
 
               <Field>
-                <FieldLabel htmlFor="role">Select Role</FieldLabel>
+                <FieldLabel>Role</FieldLabel>
                 <select
-                  id="role"
                   value={role}
                   onChange={(e) => setRole(e.target.value as Role)}
                   className="border rounded px-3 py-2 w-full"
@@ -148,10 +136,6 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
                 <Button type="submit" disabled={loading}>
                   {loading ? "Registering..." : "Register"}
                 </Button>
-
-                {error && (
-                  <p className="text-red-500 text-sm text-center mt-2">{error}</p>
-                )}
 
                 <FieldDescription className="text-center mt-2">
                   Already have an account? <a href="/login">Login</a>
