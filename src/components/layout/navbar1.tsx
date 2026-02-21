@@ -64,7 +64,6 @@ const Navbar1 = ({ className }: Navbar1Props) => {
   const menu: MenuItem[] = [
     { title: "Home", url: "/" },
     { title: "Find a tutor", url: "/tutor" },
-    { title: "How it works", url: "/how-it-works" },
   ];
 
   const auth = {
