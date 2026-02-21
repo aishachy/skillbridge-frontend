@@ -65,7 +65,6 @@ const Navbar1 = ({ className }: Navbar1Props) => {
     { title: "Home", url: "/" },
     { title: "Find a tutor", url: "/tutor" },
     { title: "How it works", url: "/how-it-works" },
-    { title: "About", url: "/about" },
   ];
 
   const auth = {
