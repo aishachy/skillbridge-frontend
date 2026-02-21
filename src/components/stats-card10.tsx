@@ -54,8 +54,8 @@ export default function StatsCard() {
   if (loading)
     return <p className="text-center mt-10">Loading tutors...</p>;
 
-  const filteredTutor = tutors.filter((tutor) => {
-    const searchLower = search.toLowerCase();
+const filteredTutor = (tutors || []).filter((tutor) => {
+  const searchLower = search.toLowerCase();
 
     const matchesSearch =
       tutor.user.name.toLowerCase().includes(searchLower) ||

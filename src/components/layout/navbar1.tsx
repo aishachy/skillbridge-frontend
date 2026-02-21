@@ -59,12 +59,11 @@ interface Navbar1Props {
   className?: string;
 }
 
-const Navbar1 = ({ tutorId, className }: Navbar1Props) => {
-  // Define menu inside function so tutorId can be used
+const Navbar1 = ({ className }: Navbar1Props) => {
+  
   const menu: MenuItem[] = [
     { title: "Home", url: "/" },
     { title: "Find a tutor", url: "/tutor" },
-    { title: "Tutor Profile", url: tutorId ? `/tutor/${tutorId}` : "/tutor" },
     { title: "How it works", url: "/how-it-works" },
     { title: "About", url: "/about" },
   ];
