@@ -1,60 +1,46 @@
+import { FaSearch, FaCalendarAlt, FaBook } from "react-icons/fa";
+
 export default function About() {
+    const steps = [
+        {
+            icon: <FaSearch className="w-6 h-6 text-purple-600" />,
+            title: "Find your match",
+            description:
+                "Search by subject, price, or rating to find the perfect expert.",
+        },
+        {
+            icon: <FaCalendarAlt className="w-6 h-6 text-purple-600" />,
+            title: "Book a session",
+            description:
+                "Choose a time that fits your schedule and book instantly.",
+        },
+        {
+            icon: <FaBook className="w-6 h-6 text-purple-600" />,
+            title: "Start learning",
+            description:
+                "Join your personalized 1-on-1 session via our secure platform.",
+        },
+    ];
     return (
         <>
 
             {/* ================= HOW IT WORKS ================= */}
-            <section className="bg-white py-20 px-6">
-                <div className="max-w-6xl mx-auto text-center">
+            <section className="py-20 bg-gray-50">
+                <div className="container mx-auto text-center px-6">
+                    <h2 className="text-3xl font-bold text-gray-900">How SkillBridge Works</h2>
+                    <p className="text-gray-500 mt-2 mb-12">
+                        Your journey to mastery in three simple steps
+                    </p>
 
-                    <div className="mb-12">
-                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-                            How SkillBridge Works
-                        </h2>
-                        <p className="text-gray-500 mt-3">
-                            Your journey to mastery in three simple steps
-                        </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-10">
+                        {steps.map((step, index) => (
+                            <div key={index} className="flex flex-col items-center text-center p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow">
+                                <div className="bg-purple-100 p-4 rounded-full mb-4">{step.icon}</div>
+                                <h3 className="text-lg font-semibold mb-2">{step.title}</h3>
+                                <p className="text-gray-500">{step.description}</p>
+                            </div>
+                        ))}
                     </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-
-                        <div>
-                            <div className="w-16 h-16 mx-auto flex items-center justify-center rounded-full bg-purple-600 text-2xl mb-6">
-                                🔍
-                            </div>
-                            <h3 className="text-xl font-semibold mb-2">
-                                Find your match
-                            </h3>
-                            <p className="text-gray-500">
-                                Search by subject, price, or rating to find the perfect expert.
-                            </p>
-                        </div>
-
-                        <div>
-                            <div className="w-16 h-16 mx-auto flex items-center justify-center rounded-full bg-purple-600 text-2xl mb-6">
-                                📅
-                            </div>
-                            <h3 className="text-xl font-semibold mb-2">
-                                Book a session
-                            </h3>
-                            <p className="text-gray-500">
-                                Choose a time that fits your schedule and book instantly.
-                            </p>
-                        </div>
-
-                        <div>
-                            <div className="w-16 h-16 mx-auto flex items-center justify-center rounded-full bg-purple-600 text-2xl mb-6">
-                                📖
-                            </div>
-                            <h3 className="text-xl font-semibold mb-2">
-                                Start learning
-                            </h3>
-                            <p className="text-gray-500">
-                                Join your personalized 1-on-1 session via our secure platform.
-                            </p>
-                        </div>
-
-                    </div>
-
                 </div>
             </section>
 
