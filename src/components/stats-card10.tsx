@@ -137,20 +137,20 @@ export default function TutorList() {
               {/* Buttons */}
               <Link
                 href={`/tutor/${tutor.id}`}
-                className="flex-1 bg-purple-600 text-white py-2 rounded-2xl text-center hover:bg-gray-800 transition"
+                className="w-full block bg-purple-600 text-white py-3 rounded-2xl text-center font-semibold hover:bg-gray-800 transition"
               >
                 Explore Profile →
               </Link>
-              <div>
+              <div className="flex justify-between items-center">
                 <Link
                   href={`/tutor/${tutor.id}/edit`}
-                  className="flex-1 bg-gray-300 text-white py-2 rounded-2xl text-center hover:bg-purple-600 transition"
+                  className="flex-1 bg-green-700 text-white py-2 rounded-2xl text-center hover:bg-green-500 transition"
                 >
                   Edit
                 </Link>
                 <button
                   onClick={() => handleDelete(tutor.id)}
-                  className="flex-1 bg-red-700 text-white py-2 rounded-2xl hover:bg-gray-300 transition"
+                  className="flex-1 bg-red-600 text-white py-2 rounded-2xl hover:bg-red-700 transition"
                 >
                   Delete
                 </button>
