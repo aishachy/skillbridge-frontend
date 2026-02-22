@@ -74,7 +74,8 @@ export default function TutorProfilePage() {
         const userRes = await fetch(`${API_URL}/api/auth/me`, { cache: "no-store", credentials: "include" });
         if (userRes.ok) {
           const userData = await userRes.json();
-          setUser(userData.user ?? null);
+          console.log("Current user API response:", userData);
+          setUser(userData.user ?? userData.data ?? null);
         }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
