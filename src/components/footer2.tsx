@@ -27,7 +27,7 @@ interface Footer2Props {
 
 const Footer2 = ({
   className,
-  tagline = "Components made easy.",
+  tagline = "The world's leading platform for personalized 1-on-1 education. Empowering students since 2026.",
   menuItems = [
     
     {
@@ -75,7 +75,7 @@ const Footer2 = ({
           <div className="grid grid-cols-2 gap-8 lg:grid-cols-6">
             <div className="col-span-2 mb-8 lg:mb-0">
               <div className="flex items-center gap-2 lg:justify-start">
-                <p>SkillBridge</p>
+                <p className="font-bold text-2xl">SkillBridge</p>
               </div>
               <p className="mt-4 font-bold">{tagline}</p>
             </div>
