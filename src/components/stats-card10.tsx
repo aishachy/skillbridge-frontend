@@ -135,22 +135,22 @@ export default function TutorList() {
               <p className="text-gray-600 mt-3 line-clamp-3">{tutor.bio}</p>
 
               {/* Buttons */}
-              <div className="mt-8 flex gap-2">
-                <Link
-                  href={`/tutor/${tutor.id}`}
-                  className="flex-1 bg-purple-600 text-white py-2 rounded-2xl text-center hover:bg-gray-800 transition"
-                >
-                  Explore Profile →
-                </Link>
+              <Link
+                href={`/tutor/${tutor.id}`}
+                className="flex-1 bg-purple-600 text-white py-2 rounded-2xl text-center hover:bg-gray-800 transition"
+              >
+                Explore Profile →
+              </Link>
+              <div>
                 <Link
                   href={`/tutor/${tutor.id}/edit`}
-                  className="flex-1 bg-green-600 text-white py-2 rounded-2xl text-center hover:bg-green-700 transition"
+                  className="flex-1 bg-gray-300 text-white py-2 rounded-2xl text-center hover:bg-purple-600 transition"
                 >
                   Edit
                 </Link>
                 <button
                   onClick={() => handleDelete(tutor.id)}
-                  className="flex-1 bg-red-600 text-white py-2 rounded-2xl hover:bg-red-700 transition"
+                  className="flex-1 bg-red-700 text-white py-2 rounded-2xl hover:bg-gray-300 transition"
                 >
                   Delete
                 </button>
