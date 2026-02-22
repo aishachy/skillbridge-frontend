@@ -60,7 +60,7 @@ export default function EditTutorPage() {
       setUpdating(true);
 
       const res = await fetch(`${API_URL}/api/tutor/profile/${id}`, {
-        method: "PATCH",
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           bio,
