@@ -132,7 +132,7 @@ export default function TutorList() {
               <h2 className="mt-6 text-2xl font-bold text-gray-900">{tutor.user.name}</h2>
 
               {/* Bio */}
-              <p className="text-gray-600 mt-3 line-clamp-3">{tutor.bio}</p>
+              <p className="text-gray-600 mt-3 line-clamp-3 pb-3">{tutor.bio}</p>
 
               {/* Buttons */}
               <Link
@@ -141,16 +141,16 @@ export default function TutorList() {
               >
                 Explore Profile →
               </Link>
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center pt-4 gap-3">
                 <Link
                   href={`/tutor/${tutor.id}/edit`}
-                  className="flex-1 bg-green-700 text-white py-2 rounded-2xl text-center hover:bg-green-500 transition"
+                  className="flex-1 bg-teal-500 hover:bg-teal-600 text-white py-3 rounded-2xl font-semibold transition"
                 >
                   Edit
                 </Link>
                 <button
                   onClick={() => handleDelete(tutor.id)}
-                  className="flex-1 bg-red-600 text-white py-2 rounded-2xl hover:bg-red-700 transition"
+                  className="flex-1 bg-amber-500 hover:bg-amber-600 text-white py-3 rounded-2xl font-semibold transition"
                 >
                   Delete
                 </button>
