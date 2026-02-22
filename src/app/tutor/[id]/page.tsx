@@ -10,7 +10,7 @@ interface User {
   id: number;
   name: string;
   email: string;
-  role: string; // Added role to check permissions
+  role: string; 
 }
 
 interface Review {
@@ -55,7 +55,7 @@ export default function TutorProfilePage() {
   const id = params?.id as string | undefined;
 
   const [tutor, setTutor] = useState<Tutor | null>(null);
-  const [user, setUser] = useState<User | null>(null); // current logged-in user
+  const [user, setUser] = useState<User | null>(null); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -74,7 +74,7 @@ export default function TutorProfilePage() {
         const userRes = await fetch(`${API_URL}/api/auth/me`, { cache: "no-store", credentials: "include" });
         if (userRes.ok) {
           const userData = await userRes.json();
-          setUser(userData.data ?? userData ?? null);
+          setUser(userData.user ?? null);
         }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
@@ -100,7 +100,7 @@ export default function TutorProfilePage() {
       });
       if (!res.ok) throw new Error("Failed to delete tutor");
       alert("Tutor deleted successfully!");
-      router.push("/tutor"); // redirect to tutor list
+      router.push("/tutor"); 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error(err);
@@ -112,7 +112,7 @@ export default function TutorProfilePage() {
   if (error) return <p className="text-center mt-10 text-red-500">{error}</p>;
   if (!tutor) return <p className="text-center mt-10">Tutor not found</p>;
 
-  // Check if current user can edit/delete
+
   const canEditOrDelete = user?.role === "TUTOR" || user?.role === "ADMIN";
 
   return (
@@ -245,7 +245,7 @@ export default function TutorProfilePage() {
         {canEditOrDelete && (
           <div className="flex justify-between gap-4">
             <Link
-              href={`/tutor/${tutor.id}/edit`}
+              href={`/tutor/edit/${tutor.id}`}
               className="flex-1 bg-teal-500 hover:bg-teal-600 text-white py-3 rounded-2xl font-semibold transition text-center"
             >
               Edit
