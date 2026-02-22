@@ -10,7 +10,7 @@ interface User {
   id: number;
   name: string;
   email: string;
-  role: string; 
+  role: string;
 }
 
 interface Review {
@@ -55,27 +55,37 @@ export default function TutorProfilePage() {
   const id = params?.id as string | undefined;
 
   const [tutor, setTutor] = useState<Tutor | null>(null);
-  const [user, setUser] = useState<User | null>(null); 
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!id) return;
-
     const fetchData = async () => {
       try {
         // Fetch tutor
-        const tutorRes = await fetch(`${API_URL}/api/tutor/${id}`, { cache: "no-store", credentials: "include" });
-        if (!tutorRes.ok) throw new Error(`Failed to fetch tutor`);
+        const tutorRes = await fetch(`${API_URL}/api/tutor/${id}`, { cache: "no-store" });
+        if (!tutorRes.ok) throw new Error("Failed to fetch tutor");
         const tutorData = await tutorRes.json();
         setTutor(tutorData.data ?? tutorData ?? null);
 
-        // Fetch current user (to check role)
-        const userRes = await fetch(`${API_URL}/api/auth/me`, { cache: "no-store", credentials: "include" });
-        if (userRes.ok) {
-          const userData = await userRes.json();
-          console.log("Current user API response:", userData);
-          setUser(userData.user ?? userData.data ?? null);
+        // Fetch current logged-in user using JWT from localStorage
+        const token = localStorage.getItem("token"); // <-- store your JWT here after login
+        if (token) {
+          const userRes = await fetch(`${API_URL}/api/auth/me`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (userRes.ok) {
+            const json = await userRes.json();
+            console.log("Current user API response:", json);
+            setUser(json.user ?? json.data ?? null);
+          } else {
+            console.warn("Failed to fetch current user:", userRes.status);
+            setUser(null);
+          }
         }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
@@ -89,19 +99,21 @@ export default function TutorProfilePage() {
     fetchData();
   }, [id]);
 
-  // DELETE handler
   const handleDelete = async () => {
     if (!tutor) return;
     if (!confirm("Are you sure you want to delete this tutor?")) return;
 
     try {
+      const token = localStorage.getItem("token");
       const res = await fetch(`${API_URL}/api/tutor/${tutor.id}`, {
         method: "DELETE",
-        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       if (!res.ok) throw new Error("Failed to delete tutor");
       alert("Tutor deleted successfully!");
-      router.push("/tutor"); 
+      router.push("/tutor");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error(err);
@@ -214,33 +226,33 @@ export default function TutorProfilePage() {
           </div>
         )}
 
-                        {/* BOOKINGS */}
-                {tutor.bookings?.length > 0 && (
-                    <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 hover:shadow-md transition">
-                        <h3 className="text-xl font-semibold text-gray-900 mb-6">Upcoming Bookings</h3>
-                        <div className="space-y-4">
-                            {tutor.bookings.map((booking) => (
-                                <div key={booking.id} className="bg-indigo-50 border border-indigo-100 rounded-2xl p-6 flex justify-between items-center">
-                                    <div>
-                                        <p className="text-gray-800 font-medium">{new Date(booking.startTime).toLocaleString()}</p>
-                                        <p className="text-gray-500 text-sm mt-1">
-                                            {booking.user?.name || "Student"} —{" "}
-                                            <span className={`ml-1 font-semibold ${booking.status === "CONFIRMED"
-                                                    ? "text-green-600"
-                                                    : booking.status === "PENDING"
-                                                        ? "text-yellow-600"
-                                                        : "text-red-600"
-                                                }`}>
-                                                {booking.status}
-                                            </span>
-                                        </p>
-                                    </div>
-                                    <div className="text-indigo-600 font-semibold text-lg">${booking.price}</div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
+        {/* BOOKINGS */}
+        {tutor.bookings?.length > 0 && (
+          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 hover:shadow-md transition">
+            <h3 className="text-xl font-semibold text-gray-900 mb-6">Upcoming Bookings</h3>
+            <div className="space-y-4">
+              {tutor.bookings.map((booking) => (
+                <div key={booking.id} className="bg-indigo-50 border border-indigo-100 rounded-2xl p-6 flex justify-between items-center">
+                  <div>
+                    <p className="text-gray-800 font-medium">{new Date(booking.startTime).toLocaleString()}</p>
+                    <p className="text-gray-500 text-sm mt-1">
+                      {booking.user?.name || "Student"} —{" "}
+                      <span className={`ml-1 font-semibold ${booking.status === "CONFIRMED"
+                        ? "text-green-600"
+                        : booking.status === "PENDING"
+                          ? "text-yellow-600"
+                          : "text-red-600"
+                        }`}>
+                        {booking.status}
+                      </span>
+                    </p>
+                  </div>
+                  <div className="text-indigo-600 font-semibold text-lg">${booking.price}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* EDIT/DELETE buttons for TUTOR & ADMIN */}
         {canEditOrDelete && (
