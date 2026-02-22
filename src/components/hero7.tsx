@@ -1,10 +1,6 @@
-import { Star } from "lucide-react";
-
 
 import { cn } from "@/lib/utils";
 
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 interface Hero7Props {
@@ -46,7 +42,7 @@ const Hero7 = ({
 
           <Link
             href="/tutors"
-            className="inline-block mt-6 bg-blue-600 text-white px-6 py-3 rounded-lg max-w-max hover:bg-blue-700 transition-colors"
+            className="inline-block mt-6 bg-purple-600 text-white px-6 py-3 rounded-lg max-w-max hover:bg-gray-300 transition-colors"
           >
             Find All Tutors
           </Link>

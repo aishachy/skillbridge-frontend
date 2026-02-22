@@ -77,7 +77,7 @@ const Navbar1 = ({ className }: Navbar1Props) => {
         <nav className="hidden items-center justify-between lg:flex">
           <div className="flex items-center gap-6">
             <p className="text-2xl font-bold">Skillbridge</p>
-            <div className="flex items-center">
+            <div className="flex items-center justify-between">
               <NavigationMenu>
                 <NavigationMenuList>
                   {menu.map((item) => renderMenuItem(item))}

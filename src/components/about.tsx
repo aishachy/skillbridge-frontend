@@ -49,11 +49,8 @@ export default function About() {
                 <div className="max-w-6xl mx-auto">
 
                     <div className="text-center mb-16">
-                        <p className="text-sm tracking-widest text-indigo-500 font-semibold uppercase">
-                            Platform Metrics
-                        </p>
                         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">
-                            REAL-TIME IMPACT
+                            Real Time Impact
                         </h2>
                     </div>
 
