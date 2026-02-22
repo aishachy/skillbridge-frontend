@@ -7,64 +7,43 @@ import { env } from "@/env";
 
 const API_URL = env.NEXT_PUBLIC_API_URL;
 
-interface Category {
-  id: number;
-  subjectName: string;
-}
-
-interface TutorCategory {
-  category: {
-    id: number;
-  };
-}
-
 interface TutorResponse {
   bio: string;
   education: string;
   experience: string;
   perHourRate: number;
   location: string;
-  tutorCategories: TutorCategory[];
 }
 
 export default function EditTutorPage() {
   const params = useParams();
   const router = useRouter();
-  const id = Number(params.id); 
+  const id = Number(params.id);
 
   const [bio, setBio] = useState("");
   const [education, setEducation] = useState("");
   const [experience, setExperience] = useState("");
   const [perHourRate, setPerHourRate] = useState("");
   const [location, setLocation] = useState("");
-  const [categoryIds, setCategoryIds] = useState<number[]>([]);
 
-  const [allCategories, setAllCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
     if (!id) return;
 
-    async function fetchData() {
+    async function fetchTutor() {
       try {
-        const tutorRes = await fetch(`${API_URL}/api/tutor/${id}`);
-        const tutorData: TutorResponse = await tutorRes.json();
+        const res = await fetch(`${API_URL}/api/tutor/${id}`);
+        if (!res.ok) throw new Error("Failed to fetch tutor");
 
-        setBio(tutorData.bio ?? "");
-        setEducation(tutorData.education ?? "");
-        setExperience(tutorData.experience ?? "");
-        setPerHourRate(
-          tutorData.perHourRate ? String(tutorData.perHourRate) : ""
-        );
-        setLocation(tutorData.location ?? "");
-        setCategoryIds(
-          tutorData.tutorCategories?.map(c => c.category.id) ?? []
-        );
+        const data: TutorResponse = await res.json();
 
-        const catRes = await fetch(`${API_URL}/api/categories`);
-        const catData: Category[] = await catRes.json();
-        setAllCategories(catData ?? []);
+        setBio(data.bio ?? "");
+        setEducation(data.education ?? "");
+        setExperience(data.experience ?? "");
+        setPerHourRate(data.perHourRate ? String(data.perHourRate) : "");
+        setLocation(data.location ?? "");
       } catch (error) {
         console.error("Failed to load tutor:", error);
         alert("Failed to load tutor data");
@@ -73,16 +52,8 @@ export default function EditTutorPage() {
       }
     }
 
-    fetchData();
+    fetchTutor();
   }, [id]);
-
-  const handleCategoryToggle = (catId: number) => {
-    setCategoryIds(prev =>
-      prev.includes(catId)
-        ? prev.filter(id => id !== catId)
-        : [...prev, catId]
-    );
-  };
 
   const handleUpdate = async () => {
     try {
@@ -95,9 +66,8 @@ export default function EditTutorPage() {
           bio,
           education,
           experience,
-          perHourRate: Number(perHourRate), 
+          perHourRate: Number(perHourRate),
           location,
-          categoryIds,
         }),
       });
 
@@ -128,7 +98,7 @@ export default function EditTutorPage() {
       <input
         type="text"
         value={bio}
-        onChange={e => setBio(e.target.value)}
+        onChange={(e) => setBio(e.target.value)}
         placeholder="Bio"
         className="w-full border rounded p-2"
       />
@@ -136,7 +106,7 @@ export default function EditTutorPage() {
       <input
         type="text"
         value={education}
-        onChange={e => setEducation(e.target.value)}
+        onChange={(e) => setEducation(e.target.value)}
         placeholder="Education"
         className="w-full border rounded p-2"
       />
@@ -144,15 +114,15 @@ export default function EditTutorPage() {
       <input
         type="text"
         value={experience}
-        onChange={e => setExperience(e.target.value)}
+        onChange={(e) => setExperience(e.target.value)}
         placeholder="Experience"
         className="w-full border rounded p-2"
       />
 
       <input
-        type="number"
+        type="string"
         value={perHourRate}
-        onChange={e => setPerHourRate(e.target.value)}
+        onChange={(e) => setPerHourRate(e.target.value)}
         placeholder="Per Hour Rate"
         className="w-full border rounded p-2"
       />
@@ -160,30 +130,10 @@ export default function EditTutorPage() {
       <input
         type="text"
         value={location}
-        onChange={e => setLocation(e.target.value)}
+        onChange={(e) => setLocation(e.target.value)}
         placeholder="Location"
         className="w-full border rounded p-2"
       />
-
-      {/* Categories */}
-      <div>
-        <h2 className="font-semibold mb-2">Categories</h2>
-        <div className="flex flex-wrap gap-2">
-          {allCategories.map(cat => (
-            <label
-              key={cat.id}
-              className="inline-flex items-center gap-2 bg-gray-200 px-3 py-1 rounded cursor-pointer"
-            >
-              <input
-                type="checkbox"
-                checked={categoryIds.includes(cat.id)}
-                onChange={() => handleCategoryToggle(cat.id)}
-              />
-              {cat.subjectName}
-            </label>
-          ))}
-        </div>
-      </div>
 
       {/* Buttons */}
       <div className="mt-8 flex justify-between gap-4">
