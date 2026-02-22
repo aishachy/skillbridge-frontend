@@ -66,7 +66,7 @@ export default function EditTutorPage() {
           bio,
           education,
           experience,
-          perHourRate: Number(perHourRate),
+          perHourRate,
           location,
         }),
       });
