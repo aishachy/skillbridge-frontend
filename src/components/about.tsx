@@ -2,7 +2,7 @@ export default function About() {
   return (
     <>
       {/* ================= PLATFORM METRICS ================= */}
-      <section className="bg-gray-50 py-20 px-6">
+      <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
 
           <div className="text-center mb-16">
