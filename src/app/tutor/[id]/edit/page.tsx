@@ -11,7 +11,7 @@ interface TutorResponse {
   bio: string;
   education: string;
   experience: string;
-  perHourRate: number;
+  perHourRate: number | string;
   location: string;
 }
 
@@ -32,9 +32,21 @@ export default function EditTutorPage() {
   useEffect(() => {
     if (!id) return;
 
+    const token = localStorage.getItem("token"); // <-- JWT from login
+    if (!token) {
+      alert("You must be logged in to edit your profile.");
+      router.push("/login");
+      return;
+    }
+
     async function fetchTutor() {
       try {
-        const res = await fetch(`${API_URL}/api/tutor/${id}`);
+        const res = await fetch(`${API_URL}/api/tutor/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         if (!res.ok) throw new Error("Failed to fetch tutor");
 
         const data: TutorResponse = await res.json();
@@ -53,15 +65,24 @@ export default function EditTutorPage() {
     }
 
     fetchTutor();
-  }, [id]);
+  }, [id, router]);
 
   const handleUpdate = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("You must be logged in to update your profile.");
+      return;
+    }
+
     try {
       setUpdating(true);
 
       const res = await fetch(`${API_URL}/api/tutor/profile/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
           bio,
           education,
@@ -71,13 +92,17 @@ export default function EditTutorPage() {
         }),
       });
 
-      if (!res.ok) throw new Error("Failed to update tutor");
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData?.message || "Failed to update tutor");
+      }
 
       alert("Tutor updated successfully!");
       router.push(`/tutor/${id}`);
-    } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       console.error("Update failed:", error);
-      alert("Failed to update tutor");
+      alert(error.message || "Failed to update tutor");
     } finally {
       setUpdating(false);
     }
@@ -120,7 +145,7 @@ export default function EditTutorPage() {
       />
 
       <input
-        type="string"
+        type="text"
         value={perHourRate}
         onChange={(e) => setPerHourRate(e.target.value)}
         placeholder="Per Hour Rate"
@@ -147,7 +172,9 @@ export default function EditTutorPage() {
         <button
           onClick={handleUpdate}
           disabled={updating}
-          className="flex-1 bg-gray-300 text-white py-3 rounded-2xl font-semibold hover:bg-purple-600 transition disabled:bg-gray-400"
+          className={`flex-1 ${
+            updating ? "bg-gray-400" : "bg-teal-500 hover:bg-teal-600"
+          } text-white py-3 rounded-2xl font-semibold transition`}
         >
           {updating ? "Saving..." : "Save Changes"}
         </button>
