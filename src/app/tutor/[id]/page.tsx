@@ -87,7 +87,7 @@ export default function TutorProfilePage() {
             setUser(null);
           }
         }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         console.error(err);
         setError(err.message || "Failed to load tutor profile");
@@ -114,7 +114,7 @@ export default function TutorProfilePage() {
       if (!res.ok) throw new Error("Failed to delete tutor");
       alert("Tutor deleted successfully!");
       router.push("/tutor");
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error(err);
       alert(err.message || "Delete failed");
@@ -126,7 +126,7 @@ export default function TutorProfilePage() {
   if (!tutor) return <p className="text-center mt-10">Tutor not found</p>;
 
 
-  const canEditOrDelete = user?.role === "TUTOR" || user?.role === "ADMIN";
+  const canEditOrDelete = (user?.id === tutor.user?.id) || user?.role === "ADMIN";
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -257,23 +257,28 @@ export default function TutorProfilePage() {
         {/* EDIT/DELETE buttons for TUTOR & ADMIN */}
         {canEditOrDelete && (
           <div className="flex justify-between gap-4">
-            <Link
-              href={`/tutor/${tutor.id}/edit`}
-              className="flex-1 bg-teal-500 hover:bg-teal-600 text-white py-3 rounded-2xl font-semibold transition text-center"
-            >
-              Edit
-            </Link>
-            <button
-              onClick={handleDelete}
-              className="flex-1 bg-amber-500 hover:bg-amber-600 text-white py-3 rounded-2xl font-semibold transition"
-            >
-              Delete
-            </button>
-          </div>
+            {user?.id === tutor.user?.id && (
+              <Link
+                href={`/tutor/edit/${tutor.id}`}
+                className="flex-1 bg-teal-500 hover:bg-teal-600 text-white py-3 rounded-2xl font-semibold text-center transition"
+              >
+                Edit
+              </Link>
+            )}
 
+            {/* Delete button only visible to admins */}
+            {user?.role === "ADMIN" && (
+              <button
+                onClick={handleDelete}
+                className="flex-1 bg-amber-500 hover:bg-amber-600 text-white py-3 rounded-2xl font-semibold transition"
+              >
+                Delete
+              </button>
+            )}
+          </div>
         )}
 
       </div>
-    </div>
+    </div >
   );
 }
