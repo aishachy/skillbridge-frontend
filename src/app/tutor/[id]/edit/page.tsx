@@ -32,7 +32,7 @@ export default function EditTutorPage() {
   useEffect(() => {
     if (!id) return;
 
-    const token = localStorage.getItem("token"); // <-- JWT from login
+    const token = localStorage.getItem("token"); 
     if (!token) {
       alert("You must be logged in to edit your profile.");
       router.push("/login");

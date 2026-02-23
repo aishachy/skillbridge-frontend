@@ -141,20 +141,6 @@ export default function TutorList() {
               >
                 Explore Profile →
               </Link>
-              {/* <div className="flex justify-between items-center pt-4 gap-3">
-                <Link
-                  href={`/tutor/${tutor.id}/edit`}
-                  className="flex-1 bg-teal-500 hover:bg-teal-600 text-white py-3 rounded-2xl font-semibold transition"
-                >
-                  Edit
-                </Link>
-                <button
-                  onClick={() => handleDelete(tutor.id)}
-                  className="flex-1 bg-amber-500 hover:bg-amber-600 text-white py-3 rounded-2xl font-semibold transition"
-                >
-                  Delete
-                </button>
-              </div> */}
             </div>
           ))}
         </div>

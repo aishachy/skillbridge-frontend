@@ -258,7 +258,7 @@ export default function TutorProfilePage() {
         {canEditOrDelete && (
           <div className="flex justify-between gap-4">
             <Link
-              href={`/tutor/edit/${tutor.id}`}
+              href={`/tutor/${tutor.id}/edit`}
               className="flex-1 bg-teal-500 hover:bg-teal-600 text-white py-3 rounded-2xl font-semibold transition text-center"
             >
               Edit
