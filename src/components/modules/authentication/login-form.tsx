@@ -19,7 +19,7 @@ import { toastSuccess } from "@/lib/swal";
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
   const router = useRouter();
-  const {setUser} = useAuth()
+  const { setUser } = useAuth()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -28,14 +28,15 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError(null); 
+    setError(null);
 
     try {
       const { user, token } = await loginUser({ email, password });
 
       toastSuccess("Login Successful")
       // store auth
-      localStorage.setItem("token", token);
+      localStorage.setItem("accessToken", token);
+      localStorage.setItem("userId", user.id.toString());
       localStorage.setItem("user", JSON.stringify(user));
 
 
