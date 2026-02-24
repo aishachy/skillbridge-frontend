@@ -12,9 +12,9 @@ export default function TutorLayout({
           <li>
             <Link href="/tutor/dashboard">Dashboard</Link>
           </li>
-          {/* <li>
+          <li>
             <Link href="/tutor/bookings">Bookings</Link>
-            </li> */}
+            </li>
           <li>Profile</li>
           <li>
             <Link href="/tutor/availability">Availability</Link>
