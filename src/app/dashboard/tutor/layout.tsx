@@ -15,7 +15,9 @@ export default function TutorLayout({
           <li>
             <Link href="/tutor/bookings">Bookings</Link>
             </li>
-          <li>Profile</li>
+          <li>
+             <Link href="/tutor/profile">Bookings</Link>
+          </li>
           <li>
             <Link href="/tutor/availability">Availability</Link>
           </li>
