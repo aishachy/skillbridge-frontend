@@ -63,20 +63,6 @@ export default function TutorList() {
     return matchesSearch && matchesMinRate;
   });
 
-  // Delete tutor
-  const handleDelete = async (id: number) => {
-    if (!confirm("Are you sure you want to delete this tutor?")) return;
-
-    try {
-      await fetch(`${API_URL}/api/tutor/${id}`,
-        { method: "DELETE" });
-      alert("Tutor deleted!");
-      setTutors(value => value.filter(t => t.id !== id));
-    } catch (err) {
-      console.error(err);
-      alert("Failed to delete tutor");
-    }
-  };
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-12 space-y-12">
