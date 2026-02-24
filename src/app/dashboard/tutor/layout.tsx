@@ -10,7 +10,7 @@ export default function TutorLayout({
       <aside className="w-64 bg-gray-100 p-4">
         <ul>
           <li>
-            <Link href="/api/tutor/dashboard">Dashboard</Link>
+            <Link href="/tutor/dashboard">Dashboard</Link>
           </li>
           <li>
             <Link href="/tutor/bookings">Bookings</Link>
