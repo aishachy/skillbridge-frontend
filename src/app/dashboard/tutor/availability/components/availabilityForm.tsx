@@ -19,6 +19,9 @@ export default function AvailabilityForm({ setSlots }: AvailabilityFormProps) {
     const token = localStorage.getItem("accessToken")
     const tutorId = localStorage.getItem("userId")
 
+    console.log("token:", token);
+    console.log("tutorId:", tutorId);
+
     if (!token || !tutorId) {
       alert("You are not logged in.")
       return
