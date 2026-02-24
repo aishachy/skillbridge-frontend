@@ -7,10 +7,10 @@ export default function TutorLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
 
   const menuItems = [
-    { title: "Dashboard", href: "/tutor/dashboard" },
-    { title: "Bookings", href: "/tutor/bookings" },
-    { title: "Profile", href: "/tutor/profile" },
-    { title: "Availability", href: "/tutor/availability" },
+    { title: "Dashboard", href: "/dashboard/tutor/dashboard" },
+    { title: "Bookings", href: "/dashboard/tutor/bookings" },
+    { title: "Profile", href: "/dashboard/tutor/profile" },
+    { title: "Availability", href: "/dashboard/tutor/availability" },
   ];
 
   return (
