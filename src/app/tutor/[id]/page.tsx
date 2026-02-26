@@ -173,6 +173,7 @@ export default function TutorProfilePage() {
 
           {user?.id !== tutor.user?.id && (
             <button
+              className="bg-purple-600 text-white px-6 py-3 rounded-full"
               onClick={() => router.push(`/tutor/${tutor.id}/book`)}
             >
               Book Appointment
