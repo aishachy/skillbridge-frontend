@@ -34,7 +34,7 @@ export default function TutorDashboard() {
         if (result.success) {
           setStats(result.data);
         } else {
-          console.error(result.message);
+          console.error("Dashboard fetch failed:", result.message);
         }
       } catch (error) {
         console.error("Dashboard fetch failed", error);
