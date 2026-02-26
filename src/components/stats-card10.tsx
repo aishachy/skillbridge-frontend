@@ -40,6 +40,7 @@ export default function TutorList() {
           headers: { Accept: "application/json" },
         });
         const data = await res.json();
+        console.log(res);
         setTutors(data.data || data); // handle backend format
       } catch (err) {
         console.error("Fetch tutors failed:", err);
