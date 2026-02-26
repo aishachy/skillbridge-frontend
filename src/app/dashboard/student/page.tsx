@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { env } from "@/env";
-
-const API_URL = env.NEXT_PUBLIC_API_URL;
+import router from "next/router";
 
 interface Session {
   id: number;
@@ -32,15 +31,20 @@ export default function StudentDashboard() {
   const [data, setData] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const API_URL = env.NEXT_PUBLIC_API_URL;
+
+
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
         const token = localStorage.getItem("token");
+        if(!token) router.push("/login")
 
         const res = await fetch(`${API_URL}/dashboard`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         });
 
