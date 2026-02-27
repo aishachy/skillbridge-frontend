@@ -37,7 +37,6 @@ export default function TutorList() {
         const res = await fetch(`${API_URL}/api/tutor`, {
           cache: "no-store",
           credentials: "include",
-          headers: { Accept: "application/json" },
         });
 
         if (!res.ok) {
@@ -69,9 +68,9 @@ export default function TutorList() {
       tutor.user.name.toLowerCase().includes(searchLower) ||
       tutor.bio.toLowerCase().includes(searchLower);
 
-    const rate = parseFloat(tutor.perHourRate || "0");
+    
     const matchesMinRate =
-    minRate !== undefined ? rate >= Number(minRate) : true;
+    minRate ? Number(tutor.perHourRate) >= Number(minRate) : true;
     return matchesSearch && matchesMinRate;
   });
 
