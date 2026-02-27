@@ -8,7 +8,7 @@ import Link from "next/link";
 interface Tutor {
   id: number;
   bio: string;
-  perHourRate: number;
+  perHourRate: string;
   user: {
     id: number;
     name: string;
@@ -46,7 +46,7 @@ export default function TutorList() {
           return;
         }
         const data = await res.json();
-        
+
         const tutorArray = Array.isArray(data.data) ? data.data : [];
         setTutors(tutorArray);
       } catch (err) {
@@ -64,11 +64,14 @@ export default function TutorList() {
 
   // Filter tutors by search and min rate
   const filteredTutor = tutors.filter(tutor => {
-    const searchLower = search.toLowerCase();
+    const searchLower = search.toLowerCase() || "";
     const matchesSearch =
       tutor.user.name.toLowerCase().includes(searchLower) ||
       tutor.bio.toLowerCase().includes(searchLower);
-    const matchesMinRate = minRate ? tutor.perHourRate >= Number(minRate) : true;
+
+    const rate = parseFloat(tutor.perHourRate || "0");
+    const matchesMinRate =
+    minRate !== undefined ? rate >= Number(minRate) : true;
     return matchesSearch && matchesMinRate;
   });
 
