@@ -39,11 +39,19 @@ export default function TutorList() {
           credentials: "include",
           headers: { Accept: "application/json" },
         });
+
+        if (!res.ok) {
+          console.error("Backend response not ok", res.status, res.statusText);
+          setTutors([]);
+          return;
+        }
         const data = await res.json();
-        console.log(res);
-        setTutors(data.data || data); // handle backend format
+        
+        const tutorArray = Array.isArray(data.data) ? data.data : [];
+        setTutors(tutorArray);
       } catch (err) {
         console.error("Fetch tutors failed:", err);
+        setTutors([]);
       } finally {
         setLoading(false);
       }
