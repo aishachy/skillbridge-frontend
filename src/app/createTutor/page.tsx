@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/providers/authProvider";
+import { env } from "@/env";
 
 export default function CreateTutor() {
   const { user: currentUser } = useAuth();
@@ -19,7 +20,7 @@ export default function CreateTutor() {
   const [isActive, setIsActive] = useState(true);
   const [isFeatured, setIsFeatured] = useState(false);
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  const API_URL = env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
     if (!currentUser?.id) return;
