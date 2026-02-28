@@ -2,24 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-import { Field, FieldGroup, FieldLabel, FieldDescription } from "@/components/ui/field";
 import { useAuth } from "@/providers/authProvider";
 import { loginUser } from "@/services/authService";
 import { toastSuccess } from "@/lib/swal";
 
-export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
+export function LoginForm() {
   const router = useRouter();
-  const { setUser } = useAuth()
+  const { setUser } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -33,80 +22,45 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
     try {
       const { user, token } = await loginUser({ email, password });
 
-      toastSuccess("Login Successful")
-      // store auth
-      localStorage.setItem("accessToken", token);
-      localStorage.setItem("userId", user.id.toString());
+      // Save to localStorage & context
       localStorage.setItem("user", JSON.stringify(user));
-
-
+      localStorage.setItem("accessToken", token);
       setUser(user);
 
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 50)
-      
+      toastSuccess("Login successful");
+      router.push("/dashboard");
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : "Login failed";
-      setError(message);
+      setError(err instanceof Error ? err.message : "Login failed");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
-        <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
-          <CardDescription>
-            Enter your email and password to login
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit}>
-            <FieldGroup>
-              <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </Field>
-
-              <Field>
-                <FieldLabel htmlFor="password">Password</FieldLabel>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </Field>
-
-              <Field>
-                <Button type="submit" disabled={loading}>
-                  {loading ? "Logging in..." : "Login"}
-                </Button>
-
-                {error && (
-                  <p className="text-red-500 text-sm text-center mt-2">{error}</p>
-                )}
-
-                <FieldDescription className="text-center mt-2">
-                  Don&apos;t have an account? <a href="/register">Sign up</a>
-                </FieldDescription>
-              </Field>
-            </FieldGroup>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-8 p-6 bg-white shadow rounded space-y-4">
+      <h2 className="text-xl font-bold">Login</h2>
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+        className="w-full p-2 border rounded"
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+        className="w-full p-2 border rounded"
+      />
+      <button type="submit" disabled={loading} className="w-full bg-blue-600 text-white p-2 rounded">
+        {loading ? "Logging in..." : "Login"}
+      </button>
+      {error && <p className="text-red-500">{error}</p>}
+    </form>
   );
+
 }
+

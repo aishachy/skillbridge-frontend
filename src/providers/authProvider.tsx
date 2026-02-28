@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 interface User {
   id: number;
@@ -15,14 +15,17 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-function getInitialUser(): User | null {
-  if (typeof window === "undefined") return null;
-  const stored = localStorage.getItem("user");
-  return stored ? JSON.parse(stored) : null;
-}
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(getInitialUser);
+  // Initialize user from localStorage only on client
+  useEffect(() => {
+    const stored = localStorage.getItem("user");
+    if (stored) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setUser(JSON.parse(stored));
+    }
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>
