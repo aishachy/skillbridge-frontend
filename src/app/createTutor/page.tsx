@@ -1,4 +1,5 @@
 // pages/create-tutor.tsx
+import { env } from "@/env";
 import React, { useState } from "react";
 
 export default function CreateTutor() {
@@ -7,9 +8,11 @@ export default function CreateTutor() {
   const [isFeatured, setIsFeatured] = useState(false);
   const [isActive, setIsActive] = useState(true);
 
+  const API_URL = env.NEXT_PUBLIC_API_URL;
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await fetch("/api/tutors", {
+    const res = await fetch(`${API_URL}/api/tutor`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, rating, isFeatured, isActive }),
