@@ -1,6 +1,8 @@
+"use client";
+
 // pages/create-tutor.tsx
 import React, { useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { env } from "@/env";
 
 export default function CreateTutor() {
