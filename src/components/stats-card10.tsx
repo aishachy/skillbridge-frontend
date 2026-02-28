@@ -39,12 +39,9 @@ export default function TutorList() {
           credentials: "include",
         });
 
-        if (!res.ok) {
-          console.error("Backend response not ok", res.status, res.statusText);
-          setTutors([]);
-          return;
-        }
+        console.log("Backend status:", res.status);
         const data = await res.json();
+        console.log("Fetched tutors:", data);
 
         const tutorArray = Array.isArray(data.data) ? data.data : [];
         setTutors(tutorArray);
@@ -68,9 +65,9 @@ export default function TutorList() {
       tutor.user.name.toLowerCase().includes(searchLower) ||
       tutor.bio.toLowerCase().includes(searchLower);
 
-    
+
     const matchesMinRate =
-    minRate ? Number(tutor.perHourRate) >= Number(minRate) : true;
+      minRate ? Number(tutor.perHourRate) >= Number(minRate) : true;
     return matchesSearch && matchesMinRate;
   });
 

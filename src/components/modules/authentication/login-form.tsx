@@ -42,8 +42,10 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 
       setUser(user);
 
-      router.push("/dashboard");
-
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 50)
+      
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : "Login failed";
