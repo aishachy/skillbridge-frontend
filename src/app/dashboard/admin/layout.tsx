@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function AdminLayout({
   children,
 }: {
@@ -8,6 +10,9 @@ export default function AdminLayout({
       <aside className="w-64 bg-gray-100 p-4">
         <ul>
           <li>Dashboard</li>
+          <Link href="/dashboard/admin/users">
+            Users
+          </Link>
           <li>Bookings</li>
           <li>Profile</li>
         </ul>
